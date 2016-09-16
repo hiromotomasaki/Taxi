@@ -11,7 +11,7 @@
 
 namespace hiro {
 // クラス:Degree
-// 変数宣言:deg
+// 定義名:deg
 // 説明:角度(ラジアン)のクラス
 	class Degree
 	{

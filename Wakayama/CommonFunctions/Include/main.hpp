@@ -16,6 +16,8 @@
 
 #include "Degree.hpp"
 #include "TotalStation.hpp"
+#include "CartesianCoordinate.hpp"
+#include "GeographicCoordinate.hpp"
 
 namespace hiro {
 

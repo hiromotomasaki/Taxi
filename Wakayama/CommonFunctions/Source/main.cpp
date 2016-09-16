@@ -59,11 +59,73 @@ int test_2_TotalStation(void)
 	return EXIT_SUCCESS;
 }
 
+int test_3_CartesianCoordinate(void);
+int test_3_CartesianCoordinate(void)
+{
+	std::cout << "=========================" << "\n";
+	{
+		CartesianCoordinate cCoor( 1071.1234, 20.123 );
 
+		cCoor.print();
+		{
+			double cCoorHoge = cCoor.getX();
+			std::cout << "( " << cCoorHoge << " )" << "\n";
+		}
+		{
+			double cCoorHoge = cCoor.getY();
+			std::cout << "( " << cCoorHoge << " )" << "\n";
+		}
+		cCoor.setX( 20 );
+		cCoor.print();
+	}
+	{
+		CartesianCoordinate cCoor;
+		cCoor.print();
+	}
+	std::cout << "=========================" << "\n";
+	return EXIT_SUCCESS;
+}
+
+int test_4_GeographicCoordinate(void);
+int test_4_GeographicCoordinate(void)
+{
+	std::cout << "=========================" << "\n";
+	{
+		GeographicCoordinate gCoor( 45.1234, 135.123 );
+
+		gCoor.print();
+		{
+			double gCoorHoge = gCoor.getPhi();
+			std::cout << "( " << gCoorHoge << " )" << "\n";
+		}
+		{
+			double gCoorHoge = gCoor.getLambda();
+			std::cout << "( " << gCoorHoge << " )" << "\n";
+		}
+		gCoor.setPhi( 20 );
+		gCoor.print();
+	}
+	{
+		GeographicCoordinate gCoor;
+		gCoor.print();
+	}
+	std::cout << "=========================" << "\n";
+	return EXIT_SUCCESS;
+}
+
+int test_5_coordinate(void);
+int test_5_coordinate(void)
+{
+
+	return EXIT_SUCCESS;
+}
 
 int main(int argc, char *argv[])
 {
 	test_1_Degree();
 	test_2_TotalStation();
+	test_3_CartesianCoordinate();
+	test_4_GeographicCoordinate();
+	test_5_coordinate();
     return EXIT_SUCCESS;
 }
