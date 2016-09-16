@@ -19,8 +19,19 @@
 #include "CartesianCoordinate.hpp"
 #include "GeographicCoordinate.hpp"
 #include "coordinate.hpp"
+
 namespace hiro {
 
 } // namespace hiro
+
+
+
+
+
+
+
+
+
+
 
 #endif // __HIRO_MAIN__

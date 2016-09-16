@@ -8,6 +8,26 @@
 
 using namespace hiro;
 
+
+// 【この関数の目的】
+// ・営業領域の設定
+//   - 大まかな領域（長方形）の設定
+//   - 大まかな領域の中で営業領域に含まれない複数の領域（長方形）を指定する設定
+//   - セルの大きさ（メートル）の設定
+// ・表示ピンの抽出条件の設定（時間幅や日にちの範囲）
+// ・クライアントを中心にした時の探索範囲円の半径（メートル）の設定
+// ・探索範囲
+
+
+
+
+
+
+
+
+
+
+
 int test_1_Degree(void);
 int test_1_Degree(void)
 {
@@ -189,10 +209,9 @@ int test_5_coordinate(void)
 
 int main(int argc, char *argv[])
 {
-	test_1_Degree();
-	test_2_TotalStation();
-	test_3_CartesianCoordinate();
-	test_4_GeographicCoordinate();
-	test_5_coordinate();
+
+
+
+
     return EXIT_SUCCESS;
 }

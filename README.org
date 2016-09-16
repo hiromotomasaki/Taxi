@@ -1,0 +1,20 @@
+* 開発環境
+#+BEGIN_SRC sh
+[19:21:47]hiro@hiro-VirtualBox:~$ cat /etc/lsb-release
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.1 LTS"
+#+END_SRC
+
+* g++のversion
+#+BEGIN_SRC sh
+[19:21:49]hiro@hiro-VirtualBox:~$ g++ --version
+g++ (Ubuntu 5.4.0-6ubuntu1~16.04.2) 5.4.0 20160609
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#+END_SRC
+
+
+
