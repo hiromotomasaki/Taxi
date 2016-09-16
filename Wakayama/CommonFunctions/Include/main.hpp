@@ -18,7 +18,7 @@
 #include "TotalStation.hpp"
 #include "CartesianCoordinate.hpp"
 #include "GeographicCoordinate.hpp"
-
+#include "coordinate.hpp"
 namespace hiro {
 
 } // namespace hiro

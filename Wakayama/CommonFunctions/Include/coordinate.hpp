@@ -34,8 +34,8 @@ extern hiro::TotalStation calculateTStationFromCCoor( const hiro::CartesianCoord
 
 extern int calculateRowFromLatitudes( const double phi, const double northPhi, const double southPhi, const double cellSizePhi ); // 緯度を対応する行に変換する。ただし、営業領域外だと0を返す
 extern int calculateColFromLongitudes( const double lambda, const double westLambda, const double eastLambda, const double cellSizeLambda ); // 経度を対応する列に変換する。ただし、営業領域外だと0を返す
-extern int calculateColFromIndex( const int index, const int numCol, const int numCell );
 extern int calculateRowFromIndex( const int index, const int numCol, const int numCell );
+extern int calculateColFromIndex( const int index, const int numCol, const int numCell );
 extern int calculateIndexFromRowCol( const int row, const int col, const int numRow, const int numCol );
 
 #endif // __HIRO_COORDINATE__

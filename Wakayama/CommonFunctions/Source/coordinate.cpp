@@ -496,7 +496,7 @@ int calculateRowFromLatitudes( const double phi, const double northPhi, const do
   }else if( phi == northPhi ) {
     return 1;
   }
-  int ret = ceil( ( northPhi - phi ) / cellSizePhi );
+  int ret = ceil( ( northPhi - phi ) / cellSizePhi ); // ceilは小数切り上げ
   return ret;
 }
 int calculateColFromLongitudes( const double lambda, const double westLambda, const double eastLambda, const double cellSizeLambda ) {
@@ -505,7 +505,18 @@ int calculateColFromLongitudes( const double lambda, const double westLambda, co
   }else if( lambda == westLambda ) {
     return 1;
   }
-  int ret = ceil( ( lambda - westLambda ) / cellSizeLambda );
+  int ret = ceil( ( lambda - westLambda ) / cellSizeLambda ); // ceilは小数切り上げ
+  return ret;
+}
+
+int calculateRowFromIndex( const int index, const int numCol, const int numCell ) {
+  if( index > numCell || index < 1 ) {
+    return 0;
+  }
+  if(index == 1) {
+    return 1;
+  }
+  int ret = ( index - 1 ) / numCol + 1;
   return ret;
 }
 int calculateColFromIndex( const int index, const int numCol, const int numCell ) {
@@ -518,16 +529,7 @@ int calculateColFromIndex( const int index, const int numCol, const int numCell 
   }
   return ret;
 }
-int calculateRowFromIndex( const int index, const int numCol, const int numCell ) {
-  if( index > numCell || index < 1 ) {
-    return 0;
-  }
-  if(index == 1) {
-    return 1;
-  }
-  int ret = ( index - 1 ) / numCol + 1;
-  return ret;
-}
+
 int calculateIndexFromRowCol( const int row, const int col, const int numRow, const int numCol ) {
   if( row < 1 || row > numRow || col < 1 || col > numCol ) {
     return 0;
