@@ -1,3 +1,5 @@
 *.o
 *.d
 *~
+/Wakayama/GreedyAndRational/Data/
+/Wakayama/CommonData/

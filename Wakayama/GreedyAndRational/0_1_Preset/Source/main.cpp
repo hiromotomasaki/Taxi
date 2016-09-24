@@ -271,82 +271,82 @@ int main()
 
 				// add child elements
 				{
-				{
-					boost::property_tree::ptree& child = root.add("gCoorNW_G", "");
-					child.put("phi", gCoorNW_G.getPhi());
-					child.put("lambda", gCoorNW_G.getLambda());
-				}
-				{
-					boost::property_tree::ptree& child = root.add("gCoorSE_G", "");
-					child.put("phi", gCoorSE_G.getPhi());
-					child.put("lambda", gCoorSE_G.getLambda());
-				}
-				{
-					boost::property_tree::ptree& child = root.add("addArea_G", "");
-					int N = sizeof(addArea_G) / sizeof(addArea_G[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("tuples", "");
-						cchild.put("phiNW", addArea_G[i][0]);
-						cchild.put("lambdaNW", addArea_G[i][1]);
-						cchild.put("phiSE", addArea_G[i][2]);
-						cchild.put("lambdaSE", addArea_G[i][3]);
+					{
+						boost::property_tree::ptree& child = root.add("gCoorNW_G", "");
+						child.put("phi", gCoorNW_G.getPhi());
+						child.put("lambda", gCoorNW_G.getLambda());
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("removeArea_G", "");
-					int N = sizeof(removeArea_G) / sizeof(removeArea_G[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("tuples", "");
-						cchild.put("phiNW", removeArea_G[i][0]);
-						cchild.put("lambdaNW", removeArea_G[i][1]);
-						cchild.put("phiSE", removeArea_G[i][2]);
-						cchild.put("lambdaSE", removeArea_G[i][3]);
+					{
+						boost::property_tree::ptree& child = root.add("gCoorSE_G", "");
+						child.put("phi", gCoorSE_G.getPhi());
+						child.put("lambda", gCoorSE_G.getLambda());
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("cellSizeMeter_G", "");
-					child.put("value", cellSizeMeter_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayDate_G", "");
-					int N = sizeof(displayDate_G) / sizeof(displayDate_G[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("date", "");
-						cchild.put("value", displayDate_G[i][0]);
+					{
+						boost::property_tree::ptree& child = root.add("addArea_G", "");
+						int N = sizeof(addArea_G) / sizeof(addArea_G[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("tuples", "");
+							cchild.put("phiNW", addArea_G[i][0]);
+							cchild.put("lambdaNW", addArea_G[i][1]);
+							cchild.put("phiSE", addArea_G[i][2]);
+							cchild.put("lambdaSE", addArea_G[i][3]);
+						}
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayTimeFrom_G", "");
-					child.put("value", displayTimeFrom_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayTimeTo_G", "");
-					child.put("value", displayTimeTo_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("searchRange_G", "");
-					child.put("value", searchRange_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("searchDegree_G", "");
-					child.put("value", searchDegree_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("baseLengthMin_G", "");
-					child.put("value", baseLengthMin_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("baseLengthMax_G", "");
-					child.put("value", baseLengthMax_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("maxDistance_G", "");
-					child.put("value", maxDistance_G);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("threshold_G", "");
-					child.put("value", threshold_G);
-				}
+					{
+						boost::property_tree::ptree& child = root.add("removeArea_G", "");
+						int N = sizeof(removeArea_G) / sizeof(removeArea_G[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("tuples", "");
+							cchild.put("phiNW", removeArea_G[i][0]);
+							cchild.put("lambdaNW", removeArea_G[i][1]);
+							cchild.put("phiSE", removeArea_G[i][2]);
+							cchild.put("lambdaSE", removeArea_G[i][3]);
+						}
+					}
+					{
+						boost::property_tree::ptree& child = root.add("cellSizeMeter_G", "");
+						child.put("value", cellSizeMeter_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayDate_G", "");
+						int N = sizeof(displayDate_G) / sizeof(displayDate_G[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("date", "");
+							cchild.put("value", displayDate_G[i][0]);
+						}
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayTimeFrom_G", "");
+						child.put("value", displayTimeFrom_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayTimeTo_G", "");
+						child.put("value", displayTimeTo_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("searchRange_G", "");
+						child.put("value", searchRange_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("searchDegree_G", "");
+						child.put("value", searchDegree_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("baseLengthMin_G", "");
+						child.put("value", baseLengthMin_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("baseLengthMax_G", "");
+						child.put("value", baseLengthMax_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("maxDistance_G", "");
+						child.put("value", maxDistance_G);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("threshold_G", "");
+						child.put("value", threshold_G);
+					}
 				}
 				// output
 				boost::property_tree::write_xml(fileRela, pt, std::locale(),
@@ -357,6 +357,15 @@ int main()
 		{
 			std::string fileName = "Rational.xml";
 			std::string fileDire = "./../Data/0_1_Preset";
+			// create a folder
+			{
+				boost::filesystem::path path(fileDire);
+				boost::system::error_code error;
+				const bool result = boost::filesystem::create_directories(path, error);
+				if (!result || error) {
+					// std::cout << "ディレクトリの作成に失敗したか、すでにあります。" << std::endl;
+				}
+			}
 			std::string fileRela = fileDire + "/" + fileName;
 			std::cout << fileName << "の作成開始" << std::endl;
 			{
@@ -368,94 +377,94 @@ int main()
 
 				// add child elements
 				{
-				{
-					boost::property_tree::ptree& child = root.add("gCoorNW_R", "");
-					child.put("phi", gCoorNW_R.getPhi());
-					child.put("lambda", gCoorNW_R.getLambda());
-				}
-				{
-					boost::property_tree::ptree& child = root.add("gCoorSE_R", "");
-					child.put("phi", gCoorSE_R.getPhi());
-					child.put("lambda", gCoorSE_R.getLambda());
-				}
-				{
-					boost::property_tree::ptree& child = root.add("addArea_R", "");
-					int N = sizeof(addArea_R) / sizeof(addArea_R[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("tuples", "");
-						cchild.put("phiNW", addArea_R[i][0]);
-						cchild.put("lambdaNW", addArea_R[i][1]);
-						cchild.put("phiSE", addArea_R[i][2]);
-						cchild.put("lambdaSE", addArea_R[i][3]);
+					{
+						boost::property_tree::ptree& child = root.add("gCoorNW_R", "");
+						child.put("phi", gCoorNW_R.getPhi());
+						child.put("lambda", gCoorNW_R.getLambda());
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("removeArea_R", "");
-					int N = sizeof(removeArea_R) / sizeof(removeArea_R[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("tuples", "");
-						cchild.put("phiNW", removeArea_R[i][0]);
-						cchild.put("lambdaNW", removeArea_R[i][1]);
-						cchild.put("phiSE", removeArea_R[i][2]);
-						cchild.put("lambdaSE", removeArea_R[i][3]);
+					{
+						boost::property_tree::ptree& child = root.add("gCoorSE_R", "");
+						child.put("phi", gCoorSE_R.getPhi());
+						child.put("lambda", gCoorSE_R.getLambda());
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("cellSizeMeter_R", "");
-					child.put("value", cellSizeMeter_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayDate_R", "");
-					int N = sizeof(displayDate_R) / sizeof(displayDate_R[0]);
-					for (int i = 0; i < N; i++) {
-						boost::property_tree::ptree& cchild = child.add("date", "");
-						cchild.put("value", displayDate_R[i][0]);
+					{
+						boost::property_tree::ptree& child = root.add("addArea_R", "");
+						int N = sizeof(addArea_R) / sizeof(addArea_R[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("tuples", "");
+							cchild.put("phiNW", addArea_R[i][0]);
+							cchild.put("lambdaNW", addArea_R[i][1]);
+							cchild.put("phiSE", addArea_R[i][2]);
+							cchild.put("lambdaSE", addArea_R[i][3]);
+						}
 					}
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayTimeFrom_R", "");
-					child.put("value", displayTimeFrom_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("displayTimeTo_R", "");
-					child.put("value", displayTimeTo_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("searchRange_R", "");
-					child.put("value", searchRange_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("searchDegree_R", "");
-					child.put("value", searchDegree_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("baseLengthMin_R", "");
-					child.put("value", baseLengthMin_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("baseLengthMax_R", "");
-					child.put("value", baseLengthMax_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("maxDistance_R", "");
-					child.put("value", maxDistance_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("demandCircleSize_R", "");
-					child.put("value", demandCircleSize_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("demandCircleThreshould_R", "");
-					child.put("value", demandCircleThreshould_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("numOfSetOfCellAlongLat_R", "");
-					child.put("value", numOfSetOfCellAlongLat_R);
-				}
-				{
-					boost::property_tree::ptree& child = root.add("vacantTaxiCircleSize_R", "");
-					child.put("value", vacantTaxiCircleSize_R);
-				}
+					{
+						boost::property_tree::ptree& child = root.add("removeArea_R", "");
+						int N = sizeof(removeArea_R) / sizeof(removeArea_R[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("tuples", "");
+							cchild.put("phiNW", removeArea_R[i][0]);
+							cchild.put("lambdaNW", removeArea_R[i][1]);
+							cchild.put("phiSE", removeArea_R[i][2]);
+							cchild.put("lambdaSE", removeArea_R[i][3]);
+						}
+					}
+					{
+						boost::property_tree::ptree& child = root.add("cellSizeMeter_R", "");
+						child.put("value", cellSizeMeter_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayDate_R", "");
+						int N = sizeof(displayDate_R) / sizeof(displayDate_R[0]);
+						for (int i = 0; i < N; i++) {
+							boost::property_tree::ptree& cchild = child.add("date", "");
+							cchild.put("value", displayDate_R[i][0]);
+						}
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayTimeFrom_R", "");
+						child.put("value", displayTimeFrom_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("displayTimeTo_R", "");
+						child.put("value", displayTimeTo_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("searchRange_R", "");
+						child.put("value", searchRange_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("searchDegree_R", "");
+						child.put("value", searchDegree_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("baseLengthMin_R", "");
+						child.put("value", baseLengthMin_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("baseLengthMax_R", "");
+						child.put("value", baseLengthMax_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("maxDistance_R", "");
+						child.put("value", maxDistance_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("demandCircleSize_R", "");
+						child.put("value", demandCircleSize_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("demandCircleThreshould_R", "");
+						child.put("value", demandCircleThreshould_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("numOfSetOfCellAlongLat_R", "");
+						child.put("value", numOfSetOfCellAlongLat_R);
+					}
+					{
+						boost::property_tree::ptree& child = root.add("vacantTaxiCircleSize_R", "");
+						child.put("value", vacantTaxiCircleSize_R);
+					}
 				}
 				// output
 				boost::property_tree::write_xml(fileRela, pt, std::locale(),
