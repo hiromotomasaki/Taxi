@@ -134,8 +134,67 @@ export LD_LIBRARY_PATH=$HOME/local/boost/lib
 
 ** hiromotoが書くもの
 運用前のテストにおいてデータ領域を少なくするために共通する関数やデータは，これらのプログラムがあるディレクトリと同じ所においてシンボリックリンクを貼ることにする．
+
+*** Greedy(オブジェクトで需要が集中するセルを指す)
+**** 0_1_Preset
+**** 0_2_Set
+**** 1_Cron
+**** 2_ForEachRequest
+
+*** Rational(丸で需要が集中する場所を指し，オブジェクトで空車の分布を考慮した需要が集中している場所を指す)
+**** 0_1_Preset
+**** 0_2_Set
+**** 1_Cron
+**** 2_ForEachRequest
+
+*** Prediction(予測は丸で表示)
+**** 0_1_Preset
+**** 0_2_Set
+**** 1_Cron
+
+
+
+
+
+
 *** Prediction(予測は丸で表示)
 ニューラルネットワーク
 *** GreedyAndRational(丸やオブジェクト)
 Greedyは大坂と同じ.Rationalは、需要が集中している場所をさがし、丸で示し、その円の中で空車の台数も考慮してタクシーに最も近いセルをオブジェクトで示す.
+**** 0_1_Preset
+./Wakayama/GreedyAndRational/Data/0_1_Preset/Greedy.xml
 
+./Wakayama/GreedyAndRational/Data/0_1_Preset/Rational.xml
+
+に設定値を書き込む
+**** 0_2_Set
+./Wakayama/GreedyAndRational/Data/0_1_Preset/Greedy.xml
+
+./Wakayama/GreedyAndRational/Data/0_1_Preset/Rational.xml
+
+を基に事前に計算できるものをすべて計算しておく．
+保存先は
+
+./Wakayama/GreedyAndRational/Data/0_2_Set/Greedy/
+
+./Wakayama/GreedyAndRational/Data/0_2_Set/Rational/
+
+である．
+
+**** 1_1_GreedyCron
+**** 1_2_RationalCron
+
+**** 2_ForEachRequest
+タクシーの位置をindexに変換
+
+if index != 0
+
+indexをtrueIndexに変換する
+
+else
+
+空オブジェクトを返す
+
+fi
+
+全trueIndexの需要数を格納した配列と，そのtrueIndexの探索範囲のtrueIndexを

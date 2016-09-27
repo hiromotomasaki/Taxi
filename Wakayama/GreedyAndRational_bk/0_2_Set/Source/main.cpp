@@ -275,7 +275,136 @@ int myFuncGreedy()
 		// 緯度(latitude)方向, 経度(longitude)方向のcellSizeを計算
 		double cellSizePhi = (gCoorNW.getPhi() - gCoorSE.getPhi()) / (double)numRow;
 		double cellSizeLambda = (gCoorSE.getLambda() - gCoorNW.getLambda()) / (double)numCol;
-		// 保存
+
+		std::cout << "各セルの代表点の計算" << "\n";
+		std::vector<GeographicCoordinate> gCoorAddAreaNW = gCoorAddAreaNW_G;
+		std::vector<GeographicCoordinate> gCoorAddAreaSE = gCoorAddAreaSE_G;
+		std::vector<GeographicCoordinate> gCoorRemoveAreaNW = gCoorRemoveAreaNW_G;
+		std::vector<GeographicCoordinate> gCoorRemoveAreaSE = gCoorRemoveAreaSE_G;
+		// 代表点ベクトルの生成
+		std::vector<GeographicCoordinate> vRepresentativePoint(numCell);
+		std::vector<int> vIndex(numCell);
+		std::vector<int> vRow(numCell);
+		std::vector<int> vCol(numCell);
+		std::vector<bool> vValid(numCell, false);
+		std::vector<int> vTrueIndex(numCell, -1);
+		int numValidCell = 0;
+		// 値を求める
+		{
+			{
+				std::vector<GeographicCoordinate>::iterator it, itr_first, itr_last;
+				itr_first = vRepresentativePoint.begin();
+				itr_last = vRepresentativePoint.end();
+				for(it = itr_first; it != itr_last; it++) {
+					std::size_t i = std::distance(itr_first, it);
+					vIndex[i] = i + 1;
+					int row = calculateRowFromIndex( i + 1, numCol, numCell );
+					vRow[i] = row;
+					int col = calculateColFromIndex( i + 1, numCol, numCell );
+					vCol[i] = col;
+					vRepresentativePoint[i].setPhi( gCoorNW.getPhi() - row * cellSizePhi + cellSizePhi / 2.0 );
+					vRepresentativePoint[i].setLambda( gCoorNW.getLambda() + col * cellSizeLambda - cellSizeLambda / 2.0 );
+				}
+			}
+			std::cout << "addAreaとremoveAreaから有効セルのindexを求める" << "\n";
+			// addAreaについて
+			{
+				int N = gCoorAddAreaNW.size();
+				for (int i = 0; i < N; i++) {
+					// gCoorとgCoorAddに重なりがあるかどうかを確認
+					bool overlap = !( ( gCoorAddAreaSE[i].getPhi() >= gCoorNW.getPhi() ) || ( gCoorAddAreaNW[i].getPhi() <= gCoorSE.getPhi() ) || ( gCoorAddAreaNW[i].getLambda() >= gCoorSE.getLambda() ) || ( gCoorAddAreaSE[i].getLambda() <= gCoorNW.getLambda() ) );
+					if (overlap == true) {
+						int RowN = calculateRowFromLatitudes( gCoorAddAreaNW[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+						int RowS = calculateRowFromLatitudes( gCoorAddAreaSE[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+						int ColE = calculateColFromLongitudes( gCoorAddAreaSE[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+						int ColW = calculateColFromLongitudes( gCoorAddAreaNW[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+						if (RowN == 0) {
+							RowN = 1;
+						}
+						if (RowS == 0) {
+							RowS = numRow;
+						}
+						if (ColE == 0) {
+							ColE = numCol;
+						}
+						if (ColW == 0) {
+							ColW = 1;
+						}
+						// (RowN, RowS, ColE, ColW)の領域のvValidをtrueにする
+						for (int j = RowN; j <= RowS; j++) {
+							for (int k = ColW; k <= ColE; k++) {
+								int indexHoge = calculateIndexFromRowCol( j, k, numRow, numCol );
+								vValid[indexHoge - 1] = true;
+							}
+						}
+					}
+				}
+			}
+			// removeAreaについて
+			{
+				int N = gCoorRemoveAreaNW.size();
+				// 配列の1行目はダミー
+				if (N>=2) {
+					for (int i = 1; i < N; i++) {
+						// gCoorとgCoorRemoveに重なりがあるかどうかを確認
+						bool overlap = !( ( gCoorRemoveAreaSE[i].getPhi() >= gCoorNW.getPhi() ) || ( gCoorRemoveAreaNW[i].getPhi() <= gCoorSE.getPhi() ) || ( gCoorRemoveAreaNW[i].getLambda() >= gCoorSE.getLambda() ) || ( gCoorRemoveAreaSE[i].getLambda() <= gCoorNW.getLambda() ) );
+						if (overlap == true) {
+							int RowN = calculateRowFromLatitudes( gCoorRemoveAreaNW[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+							int RowS = calculateRowFromLatitudes( gCoorRemoveAreaSE[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+							int ColE = calculateColFromLongitudes( gCoorRemoveAreaSE[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+							int ColW = calculateColFromLongitudes( gCoorRemoveAreaNW[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+							if (RowN == 0) {
+								RowN = 1;
+							}else{
+								RowN++;
+							}
+							if (RowS == 0) {
+								RowS = numRow;
+							}else{
+								RowS--;
+							}
+							if (ColE == 0) {
+								ColE = numCol;
+							}else{
+								ColE--;
+							}
+							if (ColW == 0) {
+								ColW = 1;
+							}else{
+								ColW++;
+							}
+							bool check = ( RowN >= 1 ) && ( RowN <= numRow ) && ( RowS >= 1 ) && ( RowS <= numRow ) && ( RowN <= RowS ) && ( ColE >= 1 ) && ( ColE <= numCol ) && ( ColW >= 1 ) && ( ColW <= numCol ) && ( ColW <= ColE );
+							// (RowN, RowS, ColE, ColW)の領域のvValidをfalseにする
+							if (check == true) {
+								for (int j = RowN; j <= RowS; j++) {
+									for (int k = ColW; k <= ColE; k++) {
+										int indexHoge = calculateIndexFromRowCol( j, k, numRow, numCol );
+										vValid[indexHoge - 1] = false;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			// vTrueIndexとnumValidCellを定める
+			{
+				int indexHoge = 1;
+				for (int i = 0; i < (int)vTrueIndex.size(); i++) {
+					if (vValid[i] == true) {
+						vTrueIndex[i] = indexHoge;
+						indexHoge++;
+					}
+				}
+				numValidCell = indexHoge - 1;
+			}
+		}
+		// validなcellから見て有効な探索範囲(Index)を定める
+
+		// 有効な探索範囲のセルへのオブジェクトを作成する
+
+		////////////////////////////////////////////////////////////
+		// baseMap.xmlに保存
 		{
 			std::string fileName = "baseMap.xml";
 			std::string fileDire = "./../Data/0_2_Set/Greedy";
@@ -322,6 +451,10 @@ int myFuncGreedy()
 						child.put("value", numCell);
 					}
 					{
+						boost::property_tree::ptree& child = root.add("numValidCell", "");
+						child.put("value", numValidCell);
+					}
+					{
 						boost::property_tree::ptree& child = root.add("cellSizePhi", "");
 						child.put("value", cellSizePhi);
 					}
@@ -336,63 +469,51 @@ int myFuncGreedy()
 			}
 			std::cout << fileName << "の作成終了" << std::endl;
 		}
-		std::cout << "各セルの代表点の計算" << "\n";
-		std::vector<GeographicCoordinate> gCoorAddAreaNW = gCoorAddAreaNW_G;
-		std::vector<GeographicCoordinate> gCoorAddAreaSE = gCoorAddAreaSE_G;
-		std::vector<GeographicCoordinate> gCoorRemoveAreaNW = gCoorRemoveAreaNW_G;
-		std::vector<GeographicCoordinate> gCoorRemoveAreaSE = gCoorRemoveAreaSE_G;
-		// 代表点ベクトルの生成
-		std::vector<GeographicCoordinate> vRepresentativePoint(numCell);
-		std::vector<int> vIndex(numCell);
-		std::vector<int> vRow(numCell);
-		std::vector<int> vCol(numCell);
-		std::vector<bool> vValid(numCell, false);
-		std::vector<int> vTrueIndex(numCell, -1);
-		// 値を求める
+		// representativePoints.xmlに保存(全体保存)
 		{
-			std::vector<GeographicCoordinate>::iterator it, itr_first, itr_last;
-			itr_first = vRepresentativePoint.begin();
-			itr_last = vRepresentativePoint.end();
-			for(it = itr_first; it != itr_last; it++) {
-				std::size_t i = std::distance(itr_first, it);
-				vIndex[i] = i + 1;
-				int row = calculateRowFromIndex( i + 1, numCol, numCell );
-				vRow[i] = row;
-				int col = calculateColFromIndex( i + 1, numCol, numCell );
-				vCol[i] = col;
-				vRepresentativePoint[i].setPhi( gCoorNW.getPhi() - row * cellSizePhi + cellSizePhi / 2.0 );
-				vRepresentativePoint[i].setLambda( gCoorNW.getLambda() + col * cellSizeLambda - cellSizeLambda / 2.0 );
-			}
-			// addAreaについて
+			std::string fileName = "representativePoints.xml";
+			std::string fileDire = "./../Data/0_2_Set/Greedy";
+			// create a folder
 			{
-				int N = gCoorAddAreaNW.size();
-				for (int i = 0; i < N; i++) {
-					// gCoorArea[i]とgCoorが示す領域に重なりがあるのか確認
-					// 重なっていない条件
-					// 
-					// a1 <= x1 < x2 <= a2, b1 <= y1 < y2 <= b2
-					// 
-					bool overlap = (  ) && (  );
-
-
-					int addRowN = calculateRowFromLatitudes( gCoorAddAreaNW[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
-					int addRowS = calculateRowFromLatitudes( gCoorAddAreaSE[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
-					int addColW = calculateColFromLongitudes( gCoorAddAreaNW[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
-					int addColE = calculateColFromLongitudes( gCoorAddAreaSE[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
-					// vValidがtrueになる範囲
-
-					// gCoorAddAreaNW[i];
-					// gCoorAddAreaSE[i];
+				boost::filesystem::path path(fileDire);
+				boost::system::error_code error;
+				const bool result = boost::filesystem::create_directories(path, error);
+				if (!result || error) {
+					// std::cout << "ディレクトリの作成に失敗したか、すでにあります。" << std::endl;
 				}
 			}
-			// removeAreaについて
-			
+			std::string fileRela = fileDire + "/" + fileName;
+			std::cout << fileName << "の作成開始" << std::endl;
+			{
+				// create an empty property tree
+				boost::property_tree::ptree pt;
 
+				// create the root element
+				boost::property_tree::ptree& root = pt.put("table", "");
+
+				// add child elements
+				{
+					for (int i = 0; i < numCell; i++) {
+						boost::property_tree::ptree& child = root.add("cell", "");
+						child.put("index", vIndex[i]);
+						child.put("row", vRow[i]);
+						child.put("col", vCol[i]);
+						child.put("trueIndex", vTrueIndex[i]);
+						child.put("position.phi", vRepresentativePoint[i].getPhi());
+						child.put("position.lambda", vRepresentativePoint[i].getLambda());
+					}
+				}
+				// output
+				boost::property_tree::write_xml(fileRela, pt, std::locale(),
+												boost::property_tree::xml_writer_make_settings<std::string>(' ', 2));
+			}
+			std::cout << fileName << "の作成終了" << std::endl;
 		}
-		std::cout << "addAreaとremoveAreaから有効セルのindexを求める" << "\n";
-
-		std::cout << "有効セル番号を" << "\n";
-
+		// 個別保存
+		{
+/////////////////////////////////////////////////////////////// あとで
+		}
+		////////////////////////////////////////////////////////////
 	}
 	std::cout << "Greedyの設定ファイルの作成終了" << "\n";
     return EXIT_SUCCESS;
@@ -599,7 +720,7 @@ int main()
 	// Greedy
 	myFuncGreedy();
 	// Rational
-	myFuncRational();
+	// myFuncRational();
 
     return EXIT_SUCCESS;
 }
