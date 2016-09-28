@@ -83,13 +83,14 @@ int main()
 	// 表示するピンの時間幅の始点は現在時刻から何分後なのか
 	int displayTimeTo = 4;
 	// セルから描画するオブジェクトの有効範囲の円の半径[m]
-	double searchRange = 3000;
+	// double searchRange = 3000;
+	double searchRange = 1000;	// test
 	// タクシーの進行方向を考慮した時に描画するオブジェクトの有効範囲の扇型（円に含まれる）の中心角度[deg](45度から180度まで)
 	double searchDegree = 180;
-	// オブジェクトの底辺の長さの最小値
-	double baseLengthMin = 200;
-	// オブジェクトの底辺の長さの最大値
-	double baseLengthMax = 1000;
+	// オブジェクト生成の基準となるboxの一辺の長さの最小値
+	double squareLengthMin = 200;
+	// オブジェクト生成の基準となるboxの一辺の長さの最大値
+	double squareLengthMax = 1000;
 	// タクシーの進行方向を計算するときに使用する二点間の座標間の距離の最大値．これを越すとオブジェクトは円の中から探索して選ばれる(dir1に相当)．越さなければ進行方向(dir2からdir9)の扇型の中から探索して選ばれる
 	double maxDistanceFromPreposition = 3000;
 	// 需要が集中していると判定するためのしきい値．このしきい値以上であれば需要が集中しているとみなす．
@@ -154,9 +155,9 @@ int main()
 		std::cout << "--------- タクシーの進行方向を考慮した時に描画するオブジェクトの有効範囲の扇型（円に含まれる）の中心角度[deg](45度から180度まで)  ---------" << "\n";
 		std::cout << searchDegree << "\n";
 		std::cout << "--------- オブジェクトの底辺の長さの最小値  ---------" << "\n";
-		std::cout << baseLengthMin << "\n";
+		std::cout << squareLengthMin << "\n";
 		std::cout << "--------- オブジェクトの底辺の長さの最大値  ---------" << "\n";
-		std::cout << baseLengthMax << "\n";
+		std::cout << squareLengthMax << "\n";
 		std::cout << "--------- タクシーの進行方向を計算するときに使用する二点間の座標間の距離の最大値．これを越すとオブジェクトは円の中から探索して選ばれる(dir1に相当)．越さなければ進行方向(dir2からdir9)の扇型の中から探索して選ばれる  ---------" << "\n";
 		std::cout << maxDistanceFromPreposition << "\n";
 		std::cout << "--------- 需要が集中していると判定するためのしきい値．このしきい値以上であれば需要が集中しているとみなす．  ---------" << "\n";
@@ -253,12 +254,12 @@ int main()
 					child.put("value", searchDegree);
 				}
 				{
-					boost::property_tree::ptree& child = root.add("baseLengthMin", "");
-					child.put("value", baseLengthMin);
+					boost::property_tree::ptree& child = root.add("squareLengthMin", "");
+					child.put("value", squareLengthMin);
 				}
 				{
-					boost::property_tree::ptree& child = root.add("baseLengthMax", "");
-					child.put("value", baseLengthMax);
+					boost::property_tree::ptree& child = root.add("squareLengthMax", "");
+					child.put("value", squareLengthMax);
 				}
 				{
 					boost::property_tree::ptree& child = root.add("maxDistanceFromPreposition", "");
