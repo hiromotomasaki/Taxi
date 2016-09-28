@@ -62,14 +62,14 @@ int main()
 	std::vector<GeographicCoordinate> gCoorAddSE;
 	gCoorAddSE.push_back( GeographicCoordinate( 34.57148, 135.555 ) );
 	gCoorAddSE.push_back( GeographicCoordinate( 34.57148, 135.555 ) ); // test
-	// 追加する営業領域の最北西
+	// 削除する営業領域の最北西
 	std::vector<GeographicCoordinate> gCoorRemoveNW;
 	gCoorRemoveNW.push_back( GeographicCoordinate( -1, -1 ) );
-	gCoorRemoveNW.push_back( GeographicCoordinate( 34.606409, 135.485044 ) );
-	// 追加する営業領域の最南東
+	gCoorRemoveNW.push_back( GeographicCoordinate( 34.580409, 135.465044 ) );
+	// 削除する営業領域の最南東
 	std::vector<GeographicCoordinate> gCoorRemoveSE;
 	gCoorRemoveSE.push_back( GeographicCoordinate( -1, -1 ) );
-	gCoorRemoveSE.push_back( GeographicCoordinate( 34.58148, 135.515 ) );
+	gCoorRemoveSE.push_back( GeographicCoordinate( 34.57148, 135.48 ) );
 	// セルの一辺の長さ[m]
 	double cellSizeMeter = 200;
 	// 表示するピンの日にちに関する抽出条件
@@ -83,8 +83,8 @@ int main()
 	// 表示するピンの時間幅の始点は現在時刻から何分後なのか
 	int displayTimeTo = 4;
 	// セルから描画するオブジェクトの有効範囲の円の半径[m]
-	// double searchRange = 3000;
-	double searchRange = 1000;	// test
+	double searchRange = 3000;
+	// double searchRange = 1000;	// test
 	// タクシーの進行方向を考慮した時に描画するオブジェクトの有効範囲の扇型（円に含まれる）の中心角度[deg](45度から180度まで)
 	double searchDegree = 180;
 	// オブジェクト生成の基準となるboxの一辺の長さの最小値
@@ -95,6 +95,8 @@ int main()
 	double maxDistanceFromPreposition = 3000;
 	// 需要が集中していると判定するためのしきい値．このしきい値以上であれば需要が集中しているとみなす．
 	double threshold = 2;
+	// 離散時間幅
+	int discreteTimeWidth = 2;
 	// ------------------------------------------- //
 	// ------------------ その他 ----------------- //
 	// 設定値の確認表示をするかどうか
@@ -162,6 +164,8 @@ int main()
 		std::cout << maxDistanceFromPreposition << "\n";
 		std::cout << "--------- 需要が集中していると判定するためのしきい値．このしきい値以上であれば需要が集中しているとみなす．  ---------" << "\n";
 		std::cout << threshold << "\n";
+		std::cout << "--------- 離散時間幅．  ---------" << "\n";
+		std::cout << discreteTimeWidth << "\n";
 		std::cout << "==================================" << "\n";
 	}
 
@@ -268,6 +272,10 @@ int main()
 				{
 					boost::property_tree::ptree& child = root.add("threshold", "");
 					child.put("value", threshold);
+				}
+				{
+					boost::property_tree::ptree& child = root.add("discreteTimeWidth", "");
+					child.put("value", discreteTimeWidth);
 				}
 			}
 

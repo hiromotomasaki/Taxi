@@ -139,8 +139,16 @@ export LD_LIBRARY_PATH=$HOME/local/boost/lib
 **** 0_1_Preset
 **** 0_2_Set
 **** 1_Cron
-**** 2_ForEachRequest
+Dataフォルダの中にフォルダ1_Cronを自分で作り，CommonDataの中身とリンクを貼ること.
 
+<currentTime>2016-07-05 11:30:00</currentTime>
+-2, 0, 2, 4
+火曜日4週分
+<startDate>2016-05-16 11:37:08</startDate>
+<startDate>2016-06-07 11:32:33</startDate>
+
+**** 2_ForEachRequest
+Dataフォルダの中にフォルダ2_ForEachRequestを自分で作り，CommonDataの中身とリンクを貼ること.
 *** Rational(丸で需要が集中する場所を指し，オブジェクトで空車の分布を考慮した需要が集中している場所を指す)
 **** 0_1_Preset
 **** 0_2_Set

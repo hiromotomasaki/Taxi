@@ -168,6 +168,8 @@ int main()
 	double maxDistanceFromPreposition;
 	// 需要が集中していると判定するためのしきい値．このしきい値以上であれば需要が集中しているとみなす．
 	double threshold;
+	// 離散時間幅
+	double discreteTimeWidth;
 	// ----------------------------------------------------- //
 	// ----------------------- その他 ---------------------- //
 	// 設定値の確認表示をするかどうか
@@ -274,6 +276,7 @@ int main()
 					squareLengthMax = pt.get<double>("table.squareLengthMax.value");
 					maxDistanceFromPreposition = pt.get<double>("table.maxDistanceFromPreposition.value");
 					threshold = pt.get<double>("table.threshold.value");
+					discreteTimeWidth = pt.get<double>("table.discreteTimeWidth.value");
 				}
 			}
 		}
@@ -368,6 +371,7 @@ int main()
 									vValid[indexHoge - 1] = true;
 								}
 							}
+							// std::cout <<"[Row] " << RowN << ", " << RowS << "[Col] " << ColW << ", " << ColE << "\n";
 						}
 					}
 				}
@@ -385,10 +389,10 @@ int main()
 								bool isOnTheLeft = ( gCoorRemoveSE[i].getLambda() <= gCoorNW.getLambda() );
 								bool overlap = !( isOver || isUnder || isOnTheRight || isOnTheLeft );
 								if (overlap) {
-									int RowN = calculateRowFromLatitudes( gCoorAddNW[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
-									int RowS = calculateRowFromLatitudes( gCoorAddSE[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
-									int ColE = calculateColFromLongitudes( gCoorAddSE[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
-									int ColW = calculateColFromLongitudes( gCoorAddNW[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+									int RowN = calculateRowFromLatitudes( gCoorRemoveNW[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+									int RowS = calculateRowFromLatitudes( gCoorRemoveSE[i].getPhi(), gCoorNW.getPhi(), gCoorSE.getPhi(), cellSizePhi );
+									int ColE = calculateColFromLongitudes( gCoorRemoveSE[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
+									int ColW = calculateColFromLongitudes( gCoorRemoveNW[i].getLambda(), gCoorNW.getLambda(), gCoorSE.getLambda(), cellSizeLambda );
 									{
 										if (RowN == 0) {
 											RowN = 1;
@@ -415,7 +419,7 @@ int main()
 									bool checkCol = ( ColE >= 1 ) && ( ColE <= numCol ) && ( ColW >= 1 ) && ( ColW <= numCol ) && ( ColW <= ColE );
 									bool check = checkRow && checkCol;
 									if (check) {
-										// (RowN, RowS, ColE, ColW)の領域のvValidをtrueにする
+										// (RowN, RowS, ColE, ColW)の領域のvValidをfalseにする
 										for (int j = RowN; j <= RowS; j++) {
 											for (int k = ColW; k <= ColE; k++) {
 												int indexHoge = calculateIndexFromRowCol( j, k, numRow, numCol );
@@ -909,6 +913,209 @@ int main()
 					}
 				}
 			}
+		}
+		// 空のオブジェクト情報の作成・保存
+		{
+			// 保存ファイル名
+			std::string fileName = "emptyObject.xml";
+			// 保存ファイル先のディレクトリのmakefileからの相対位置
+			std::string fileDire = "./../Data/0_2_Set";
+			// 保存path
+			std::string fileRela = fileDire + "/" + fileName;
+			// create an empty property tree
+			boost::property_tree::ptree pt;
+			// create the root element
+			// boost::property_tree::ptree& root = pt.put("table", "");
+			{
+				pt.put("table.latitude1", -1);
+				pt.put("table.longitude1", -1);
+				pt.put("table.latitude2", -1);
+				pt.put("table.longitude2", -1);
+			}
+			// output
+			boost::property_tree::write_xml(fileRela, pt, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>(' ', 2));
+		}
+		// 1_Cronの初期取り込みデータの作成・保存
+		{
+			// 保存ファイル名
+			std::string fileName = "InputDataFor1_Cron.xml";
+			// 保存ファイル先のディレクトリのmakefileからの相対位置
+			std::string fileDire = "./../Data/0_2_Set";
+			// 保存path
+			std::string fileRela = fileDire + "/" + fileName;
+			// create an empty property tree
+			boost::property_tree::ptree pt;
+			// create the root element
+			boost::property_tree::ptree& root = pt.put("table", "");
+			// add child elements
+			{
+				// ----- 加えるもの ----- //
+				// gCoorNW
+				// gCoorSE
+				// numCell
+				// numRow
+				// numCol
+				// cellSizePhi
+				// cellSizeLambda
+				// 
+				// threshold
+				// 
+				// displayDate
+				// displayTimeFrom
+				// displayTimeTo
+				// discreteTimeWidth
+				// 
+				// vValid
+				// ---------------------- //
+				// gCoorNW
+				{
+					boost::property_tree::ptree& child = root.add("gCoorNW", "");
+					child.put("phi", gCoorNW.getPhi());
+					child.put("lambda", gCoorNW.getLambda());
+				}
+				// gCoorSE
+				{
+					boost::property_tree::ptree& child = root.add("gCoorSE", "");
+					child.put("phi", gCoorSE.getPhi());
+					child.put("lambda", gCoorSE.getLambda());
+				}
+				// numCell
+				{
+					boost::property_tree::ptree& child = root.add("numCell", "");
+					child.put("value", numCell);
+				}
+				// numRow
+				{
+					boost::property_tree::ptree& child = root.add("numRow", "");
+					child.put("value", numRow);
+				}
+				// numCol
+				{
+					boost::property_tree::ptree& child = root.add("numCol", "");
+					child.put("value", numCol);
+				}
+				// cellSizePhi
+				{
+					boost::property_tree::ptree& child = root.add("cellSizePhi", "");
+					child.put("value", cellSizePhi);
+				}
+				// cellSizeLambda
+				{
+					boost::property_tree::ptree& child = root.add("cellSizeLambda", "");
+					child.put("value", cellSizeLambda);
+				}
+				// threshold
+				{
+					boost::property_tree::ptree& child = root.add("threshold", "");
+					child.put("value", threshold);
+				}
+				// displayDate
+				{
+					boost::property_tree::ptree& child = root.add("displayDate", "");
+					int N = displayDate.size();
+					for (int i = 0; i < N; i++) {
+						boost::property_tree::ptree& cchild = child.add("date", "");
+						cchild.put("value", displayDate[i]);
+					}
+				}
+                // displayTimeFrom
+				{
+					boost::property_tree::ptree& child = root.add("displayTimeFrom", "");
+					child.put("value", displayTimeFrom);
+				}
+				// displayTimeTo
+				{
+					boost::property_tree::ptree& child = root.add("displayTimeTo", "");
+					child.put("value", displayTimeTo);
+				}
+				// discreteTimeWidth
+				{
+					boost::property_tree::ptree& child = root.add("discreteTimeWidth", "");
+					child.put("value", discreteTimeWidth);
+				}
+				// vValid
+				{
+					boost::property_tree::ptree& child = root.add("cellIsValid", "");
+					for (int i = 0; i < numCell; i++) {
+						boost::property_tree::ptree& cchild = child.add("cell", "");
+						cchild.put("value", vValid[i]);
+					}
+				}
+			}
+			// output
+			boost::property_tree::write_xml(fileRela, pt, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>(' ', 2));
+		}
+		// 2_ForEachRequestの初期取り込みデータの作成・保存
+		{
+			// 保存ファイル名
+			std::string fileName = "InputDataFor2_ForEachRequest.xml";
+			// 保存ファイル先のディレクトリのmakefileからの相対位置
+			std::string fileDire = "./../Data/0_2_Set";
+			// 保存path
+			std::string fileRela = fileDire + "/" + fileName;
+			// create an empty property tree
+			boost::property_tree::ptree pt;
+			// create the root element
+			boost::property_tree::ptree& root = pt.put("table", "");
+			// add child elements
+			{
+				// ----- 加えるもの ----- //
+				// gCoorNW
+				// gCoorSE
+				// numCell
+				// numRow
+				// numCol
+				// cellSizePhi
+				// cellSizeLambda
+				// 
+				// maxDistanceFromPreposition
+				// 
+				// ---------------------- //
+				// gCoorNW
+				{
+					boost::property_tree::ptree& child = root.add("gCoorNW", "");
+					child.put("phi", gCoorNW.getPhi());
+					child.put("lambda", gCoorNW.getLambda());
+				}
+				// gCoorSE
+				{
+					boost::property_tree::ptree& child = root.add("gCoorSE", "");
+					child.put("phi", gCoorSE.getPhi());
+					child.put("lambda", gCoorSE.getLambda());
+				}
+				// numCell
+				{
+					boost::property_tree::ptree& child = root.add("numCell", "");
+					child.put("value", numCell);
+				}
+				// numRow
+				{
+					boost::property_tree::ptree& child = root.add("numRow", "");
+					child.put("value", numRow);
+				}
+				// numCol
+				{
+					boost::property_tree::ptree& child = root.add("numCol", "");
+					child.put("value", numCol);
+				}
+				// cellSizePhi
+				{
+					boost::property_tree::ptree& child = root.add("cellSizePhi", "");
+					child.put("value", cellSizePhi);
+				}
+				// cellSizeLambda
+				{
+					boost::property_tree::ptree& child = root.add("cellSizeLambda", "");
+					child.put("value", cellSizeLambda);
+				}
+				// maxDistanceFromPreposition
+				{
+					boost::property_tree::ptree& child = root.add("maxDistanceFromPreposition", "");
+					child.put("value", maxDistanceFromPreposition);
+				}
+			}
+			// output
+			boost::property_tree::write_xml(fileRela, pt, std::locale(), boost::property_tree::xml_writer_make_settings<std::string>(' ', 2));
 		}
 	}
     return EXIT_SUCCESS;
